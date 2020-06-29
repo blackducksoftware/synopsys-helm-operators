@@ -1,0 +1,6 @@
+{
+    "name": "black-duck-operator",
+    "version": "2020.6.0",
+    "chartPath": "/Users/hammer/go/src/github.com/blackducksoftware/hub-backend/docker/hub-docker/src/main/docker-compose/kubernetes/blackduck",
+    "registry": "docker.io/mikephammer"
+}
