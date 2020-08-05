@@ -1,3 +1,5 @@
+-e 
+---
 # Synopsys Helm Operators
 
 ### Supported Applications
@@ -115,3 +117,185 @@ This script uses Docker and operatorsdk to build the operator image and push the
 1. Build and push the operator image
 2. Run `oc create -f deploy/`
 
+-e 
+---
+operatorName=$1
+chartRepo=$2
+chartName=$3
+chartVersion=$4
+
+if [ $operatorName = "blackduck" ]; then 
+    echo "cd $operatorName;operator-sdk add api --api-version=blackduck-$chartVersion.synopsys.com/v1alpha1 --kind=BlackDuck-$chartVersion --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion"
+    cd $operatorName;operator-sdk add api --api-version=blackduck-$chartVersion.synopsys.com/v1alpha1 --kind=BlackDuck --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion
+elif [ $operatorName = "blackduck-connector" ]; then
+    echo "cd $operatorName;operator-sdk add api --api-version=blackduck-connector.synopsys.com/v1alpha1 --kind=BlackDuckConnector --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion"
+    cd $operatorName;operator-sdk add api --api-version=blackduck-connector.synopsys.com/v1alpha1 --kind=BlackDuckConnector --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion
+else
+    echo "${operatorName} is not supported"
+fi-e 
+---
+{
+    "name": "black-duck-operator",
+    "version": "2020.6.0",
+    "chartPath": "/Users/hammer/go/src/github.com/blackducksoftware/hub-backend/docker/hub-docker/src/main/docker-compose/kubernetes/blackduck",
+    "registry": "docker.io/mikephammer"
+}-e 
+---
+{
+    "name": "black-duck-connector-operator",
+    "version": "2.5.2",
+    "chartPath": "/Users/hammer/go/src/github.com/blackducksoftware/opssight-connector/charts/blackduck-connector",
+    "registry": "docker.io/mikephammer"
+}-e 
+---
+#!/bin/bash
+
+set -e
+
+NAME=$1
+VERSION=$2
+REGISTRY=$3
+
+function buildOperatorImage {
+    name=$1
+    version=$2
+    registry=$3
+    
+    echo "cd $name;operator-sdk build $registry/$name:v$version"
+    cd $name;operator-sdk build $registry/$name:v$version
+}
+
+function pushOperatorImage {
+    name=$1
+    registry=$2
+    
+    echo "docker push $registry/$name"
+    docker push $registry/$name
+}
+
+buildOperatorImage $NAME $VERSION $REGISTRY
+pushOperatorImage $NAME $REGISTRY-e 
+---
+operatorName=$1
+appName=$2
+kind=$3
+chartRepo=$4
+chartName=$5
+chartVersion=$6
+
+function mergeTempaltes {
+    operatorName=$1
+    chartName=$2
+    pushd $operatorName/helm-charts/$chartName/templates
+    for f in *
+    do
+        touch amegafile.yaml
+        if [ $f = "_helpers.tpl" ]; then
+            continue
+        fi
+        start=`head -1 $f`
+        if [[ ${start} != "---" ]]; then 
+            echo -e "\n---" >> amegafile.yaml    
+        fi
+        cat $f >> amegafile.yaml
+        rm $f
+    done
+    popd
+}
+
+
+
+
+chartVersion=$1
+
+chartRepo=https://sig-repo.synopsys.com/sig-cloudnative
+chartName=blackduck
+
+operatorName=blackduck-operator
+appName=blackduck
+kind=BlackDuck
+
+# Create the Operator Directory and Initial files
+echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion"
+operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion
+
+# Patch the Role.yaml so the Operator can manage Jobs
+echo  '
+  - apiGroups:
+      - "batch"
+    resources:
+      - jobs
+    verbs:
+      - "*"' > $operatorName/deploy/role.yaml
+
+# Merge templates into one file (resolves issue where Operator cannot support empty template files)
+mergeTempaltes $operatorName $chartName
+
+-e 
+---
+operatorName=$1
+appName=$2
+kind=$3
+chartRepo=$4
+chartName=$5
+chartVersion=$6
+
+function mergeTempaltes {
+    pushd blackduck/helm-charts/blackduck/templates
+    for f in *
+    do
+        touch amegafile.yaml
+        if [ $f = "_helpers.tpl" ]; then
+            continue
+        fi
+        start=`head -1 $f`
+        if [[ ${start} != "---" ]]; then 
+            echo -e "\n---" >> amegafile.yaml    
+        fi
+        cat $f >> amegafile.yaml
+    done
+    popd
+}
+
+echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion"
+operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion-e 
+---
+repoName=$1
+chartName=$2
+version=$3
+
+echo "helm fetch --untar --untardir . ${repoName}/${chartName} --version ${version}"
+helm fetch --untar --untardir . $repoName/$chartName --version $version
+
+-e 
+---
+# four node (two workers) cluster config
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: control-plane
+  - role: worker
+  - role: worker
+-e 
+---
+helmRepo=$1
+
+echo "helm search repo --versions | grep \"${helmRepo}/\""
+helm search repo --versions | grep "${helmRepo}/"
+
+-e 
+---
+#!/bin/bash
+
+echo  '
+  - apiGroups:
+      - "batch"
+    resources:
+      - jobs
+    verbs:
+      - "*"
+' > a.yaml
+ 
+
+# cat $val
