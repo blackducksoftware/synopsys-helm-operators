@@ -2,12 +2,9 @@
 
 set -e
 
-CONFIG=$1
-
-NAME=`jq -r '.name' $CONFIG`
-VERSION=`jq -r '.version' $CONFIG`
-CHART_PATH=`jq -r '.chartPath' $CONFIG`
-REGISTRY=`jq -r '.registry' $CONFIG`
+NAME=$1
+VERSION=$2
+REGISTRY=$3
 
 function buildOperatorImage {
     name=$1
@@ -22,9 +19,17 @@ function pushOperatorImage {
     name=$1
     registry=$2
     
-    echo "cd $name;docker push $registry/$name"
-    cd $name;docker push $registry/$name
+    echo "docker push $registry/$name"
+    docker push $registry/$name
 }
 
+# Patch REPLACE_IMAGE
+# sed -i 's/REPLACE_IMAGE/${REGISTRY}/${NAME}:v${VERSION}/g' input.txt
+
+# Build the image
+echo "Building Image"
 buildOperatorImage $NAME $VERSION $REGISTRY
+
+# Push the image
+echo "Pushing Image"
 pushOperatorImage $NAME $REGISTRY

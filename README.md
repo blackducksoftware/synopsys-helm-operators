@@ -44,7 +44,7 @@ This script uses Docker and operatorsdk to build the operator image and push the
 * `kc create -f deploy/crds/blackduck-connector-2.2.5.synopsys.com_blackduckconnectors_crd.yaml`
 * Deploy the Operator - Local or Build+Push
   * Local: `operator-sdk run local`
-  * Build+Push Image: `./build-push-operator.sh blackduck-connec 2020.6.0 docker.io/mikephammer`
+  * Build+Push Image: `./build-push-operator.sh blackduck-connector 2020.6.0 docker.io/mikephammer`
     - Change `REPLACE_IMAGE` in deply/operator.yaml to `docker.io/mikephammer/blackduck:v2020.6.0`
     - Give operator permission to delete jobs (see below)
     - `kc create -f deploy/`
@@ -61,9 +61,9 @@ This script uses Docker and operatorsdk to build the operator image and push the
 * `kc create -f deploy/crds/blackduck-2020.6.0.synopsys.com_blackducks_crd.yaml`
 * Deploy the Operator - Local or Build+Push
   * Local: `operator-sdk run local`
-  * Build+Push Image: `./build-push-operator.sh blackduck-connec 2020.6.0 docker.io/mikephammer`
-    - Change `REPLACE_IMAGE` in deply/operator.yaml to `docker.io/mikephammer/blackduck:v2020.6.0`
+  * Build+Push Image: `./build-push-operator.sh blackduck 2020.6.0 docker.io/mikephammer`
     - Give operator permission to delete jobs (see below)
+    - Change `REPLACE_IMAGE` in deply/operator.yaml to `docker.io/mikephammer/blackduck:v2020.6.0`
     - `kc create -f deploy/`
 * Deploy BlackDuck
   - Set postgres.isExternal to true
