@@ -1,14 +1,10 @@
-operatorName=$1
-appName=$2
-kind=$3
-chartRepo=$4
-chartName=$5
-chartVersion=$6
+#!/bin/bash
 
 function mergeTempaltes {
     operatorName=$1
     chartName=$2
     pushd $operatorName/helm-charts/$chartName/templates
+    echo "$operatorName/helm-charts/$chartName/templates"
     for f in *
     do
         touch amegafile.yaml
@@ -25,8 +21,7 @@ function mergeTempaltes {
     popd
 }
 
-
-
+set -e
 
 chartVersion=$1
 
@@ -38,20 +33,24 @@ appName=blackduck
 kind=BlackDuck
 
 # Create the Operator Directory and Initial files
-echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion"
-operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $3 --type helm --helm-chart=$chartRepo/$chartName --helm-chart-version=$chartVersion
+echo "Creating Operator:"
+echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo=\"$chartRepo\" --helm-chart-version=$chartVersion"
+operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo="$chartRepo" --helm-chart-version=$chartVersion
 
 # Patch the Role.yaml so the Operator can manage Jobs
+echo "Patching Role.yaml:"
 echo  '
-  - apiGroups:
-      - "batch"
-    resources:
-      - jobs
-    verbs:
-      - "*"
-' > $op
-cat val
+- apiGroups:
+  - "batch"
+  resources:
+  - jobs
+  verbs:
+  - "*"
+' >> $operatorName/deploy/role.yaml
 
 # Merge templates into one file (resolves issue where Operator cannot support empty template files)
+echo "Merging Template Files:"
 mergeTempaltes $operatorName $chartName
+
+echo "BlackDuck Operator Complete!"
 
