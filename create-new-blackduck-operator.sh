@@ -4,33 +4,20 @@ function mergeTempaltes {
     operatorName=$1
     chartName=$2
     pushd $operatorName/helm-charts/$chartName/templates
-    # for f in *
-    # do
-    #     touch merged-tempaltes.yaml
-    #     if [[ ($f = "_helpers.tpl") || ($f = "configmap.yaml") || ($f = "postgres-config.yaml") || ($f = "seal-key.yaml") ]]; then
-    #         continue
-    #     fi
-    #     start=`head -1 $f`
-    #     if [[ ${start} != "---" ]]; then 
-    #         echo -e "\n---" >> merged-tempaltes.yaml    
-    #     fi
-    #     cat $f >> merged-tempaltes.yaml
-    #     # rm $f
-    # done
 
-    # bianry-scanner.yaml, rabbitmq.yaml -> uploadcache.yaml
-    touch merged-tempaltes.yaml
-
+    # bianry-scanner.yaml, rabbitmq.yaml -> uploadcache.yaml    
     echo -e "\n---" >> uploadcache.yaml   
-    cat bianry-scanner.yaml >> uploadcache.yaml
+    cat binary-scanner.yaml >> uploadcache.yaml
+    rm binary-scanner.yaml
     echo -e "\n---" >> uploadcache.yaml   
     cat rabbitmq.yaml >> uploadcache.yaml
+    rm rabbitmq.yaml
 
     # onprem-postgres.yaml -> postgres-init.yaml
     echo -e "\n---" >> postgres-init.yaml   
     cat onprem-postgres.yaml >> postgres-init.yaml
+    rm onprem-postgres.yaml
     
-
     popd
 }
 
