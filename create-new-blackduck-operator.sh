@@ -5,7 +5,7 @@ function mergeTempaltes {
     chartName=$2
     pushd $operatorName/helm-charts/$chartName/templates
 
-    # bianry-scanner.yaml, rabbitmq.yaml -> uploadcache.yaml    
+    # append bianry-scanner.yaml, rabbitmq.yaml -> uploadcache.yaml    
     echo -e "\n---" >> uploadcache.yaml   
     cat binary-scanner.yaml >> uploadcache.yaml
     rm binary-scanner.yaml
@@ -13,7 +13,7 @@ function mergeTempaltes {
     cat rabbitmq.yaml >> uploadcache.yaml
     rm rabbitmq.yaml
 
-    # onprem-postgres.yaml -> postgres-init.yaml
+    # append onprem-postgres.yaml -> postgres-init.yaml
     echo -e "\n---" >> postgres-init.yaml   
     cat onprem-postgres.yaml >> postgres-init.yaml
     rm onprem-postgres.yaml

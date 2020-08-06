@@ -65,7 +65,6 @@ This script uses Helm to download a specified chart if you would like to inspect
   * Local: `operator-sdk run local`
   * Build+Push Image: `./build-push-operator.sh blackduck 2020.6.0 docker.io/mikephammer`
     - Change `REPLACE_IMAGE` in deploy/operator.yaml to `docker.io/mikephammer/blackduck:v2020.6.0`
-    - Change `REPLACE_NAMESPACE` in deploy/role_binding.yaml to `default` 
     - `kc create -f deploy/`
 * Deploy BlackDuck
   - Set postgres.isExternal to true
