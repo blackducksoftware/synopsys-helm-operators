@@ -1,3 +1,6 @@
+echo "This file is no longer supported"
+exit 0 
+
 operatorName=$1
 chartRepo=$2
 chartName=$3
