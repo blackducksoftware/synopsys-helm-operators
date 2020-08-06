@@ -3,7 +3,7 @@
 function mergeTempaltes {
     operatorName=$1
     chartName=$2
-    pushd $operatorName/helm-charts/$chartName/templates
+    pushd $operatorName/helm-charts/opssight/templates
 
     # append processors to the core
     echo -e "\n---" >> opssight-core.yaml   
@@ -23,7 +23,7 @@ function mergeTempaltes {
     echo -e "\n---" >> opssight-core.yaml   
     cat opssight-prometheus.yaml >> opssight-core.yaml
     rm opssight-prometheus.yaml
-    
+
     popd
 }
 
@@ -39,13 +39,18 @@ appName=blackduck-connector
 kind=BlackDuckConnector
 
 # Create the Operator Directory and Initial files
-echo "Creating Operator:"
+echo "Creating BlackDuck-Connector Operator..."
 echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo=\"$chartRepo\" --helm-chart-version=$chartVersion"
 operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo="$chartRepo" --helm-chart-version=$chartVersion
+echo ""
+
+# Patches
+# [Current nothing needs to be modified here]
 
 # Merge templates into one file (resolves issue where Operator cannot support empty template files)
-echo "Merging Template Files:"
+echo "Merging Template Files..."
 mergeTempaltes $operatorName $chartName
+echo ""
 
-echo "BlackDuck-Connector Operator Complete!"
+echo "BlackDuck-Connector Operator is created!"
 

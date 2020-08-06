@@ -33,12 +33,13 @@ appName=blackduck
 kind=BlackDuck
 
 # Create the Operator Directory and Initial files
-echo "Creating Operator:"
+echo "Generating BlackDuck Operator with operator-sdk..."
 echo "operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo=\"$chartRepo\" --helm-chart-version=$chartVersion"
 operator-sdk new $operatorName --api-version=$appName-$chartVersion.synopsys.com/v1alpha1 --kind $kind --type helm --helm-chart=$chartName --helm-chart-repo="$chartRepo" --helm-chart-version=$chartVersion
+echo ""
 
 # Patch the Role.yaml so the Operator can manage Jobs
-echo "Patching Role.yaml:"
+echo "Patching Role.yaml..."
 echo  '
 - apiGroups:
   - "batch"
@@ -47,13 +48,12 @@ echo  '
   verbs:
   - "*"
 ' >> $operatorName/deploy/role.yaml
-
-# Patch the CR so it can deploy by default
-# sed -i 's/isExternal\: true:isExternal\: false/g' $operatorName/helm-charts/$chartName/values.yaml
+echo ""
 
 # Merge templates into one file (resolves issue where Operator cannot support empty template files)
-echo "Merging Template Files:"
+echo "Merging Template Files..."
 mergeTempaltes $operatorName $chartName
+echo ""
 
-echo "BlackDuck Operator Complete!"
+echo "BlackDuck Operator is created!"
 
