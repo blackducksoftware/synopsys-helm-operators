@@ -1,0 +1,8 @@
+domain: synopsys.com
+layout: helm.sdk.operatorframework.io/v1
+projectName: blackduck-connector-operator
+resources:
+- group: charts
+  kind: BlackduckConnector
+  version: v1alpha1
+version: 3-alpha

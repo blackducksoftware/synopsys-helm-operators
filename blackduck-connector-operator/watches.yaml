@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: charts.synopsys.com
+  version: v1alpha1
+  kind: BlackduckConnector
+  chart: helm-charts/blackduck-connector
+# +kubebuilder:scaffold:watch

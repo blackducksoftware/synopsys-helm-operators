@@ -1,0 +1,24 @@
+# permissions for end users to edit blackduckconnectors.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: blackduckconnector-editor-role
+rules:
+- apiGroups:
+  - charts.synopsys.com
+  resources:
+  - blackduckconnectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - charts.synopsys.com
+  resources:
+  - blackduckconnectors/status
+  verbs:
+  - get

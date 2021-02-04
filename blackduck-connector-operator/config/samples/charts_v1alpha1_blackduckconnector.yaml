@@ -1,0 +1,114 @@
+apiVersion: charts.synopsys.com/v1alpha1
+kind: BlackduckConnector
+metadata:
+  name: blackduckconnector-sample
+spec:
+  # Default values copied from <project_dir>/helm-charts/blackduck-connector/values.yaml
+  artifactoryProcessor:
+    dumper: false
+    enabled: false
+    expose: None
+    imageTag: null
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  blackduck:
+    connectionsEnvironmentVariableName: blackduck.json
+    tlsVerification: false
+  core:
+    expose: None
+    imageTag: null
+    port: 3001
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+    timings:
+      checkForStalledScansPauseHours: 999999
+      clientTimeoutMilliseconds: 100000
+      modelMetricsPauseSeconds: 15
+      stalledScanClientTimeoutHours: 999999
+      unknownImagePauseMilliseconds: 15000
+    useMockMode: false
+  externalBlackDuck: null
+  fullnameOverride: ""
+  imageGetter:
+    createImagesOnly: false
+    host: localhost
+    imagePullerType: skopeo
+    imageTag: null
+    port: 3004
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  imageProcessor:
+    enabled: false
+    imageTag: null
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  imagePullSecrets: []
+  imageTag: 2.2.5
+  logLevel: debug
+  nameOverride: ""
+  podProcessor:
+    enabled: true
+    imageTag: null
+    nameSpaceFilter: ""
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  processor:
+    annotationIntervalSeconds: 30
+    certificate: ""
+    certificateKey: ""
+    dumpIntervalMinutes: 30
+    port: 3002
+  prometheus:
+    affinity: {}
+    enabled: true
+    expose: None
+    imageTag: v2.1.0
+    nodeSelector: {}
+    podSecurityContext: {}
+    registry: docker.io/prom
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+    securityContext: {}
+    tolerations: []
+  quayProcessor:
+    enabled: false
+    expose: None
+    imageTag: null
+    registry: null
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  registry: docker.io/blackducksoftware
+  scanner:
+    blackDuckClientTimeoutSeconds: 600
+    imageDirectory: /var/images
+    imageTag: null
+    port: 3003
+    registry: null
+    replicas: 1
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1300Mi
+  securedRegistries: null
+  status: Running
+  
+  

@@ -1,0 +1,91 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: blackduckconnectors.charts.synopsys.com
+spec:
+  group: charts.synopsys.com
+  names:
+    kind: BlackduckConnector
+    listKind: BlackduckConnectorList
+    plural: blackduckconnectors
+    singular: blackduckconnector
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BlackduckConnector is the Schema for the blackduckconnectors API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BlackDuckConnectorSpec defines the desired state of BlackduckConnector
+            properties:
+              externalBlackDuck:
+                items:
+                  description: This object stores the Black Duck information to connect & perform the scans. (Black Duck can be deployed in or out of the Cluster)
+                  properties:
+                    concurrentScanLimit:
+                      type: integer
+                    domain:
+                      type: string
+                    password:
+                      type: string
+                    port:
+                      type: integer
+                    scheme:
+                      type: string
+                    user:
+                      type: string
+                  required:
+                  - domain
+                  - user
+                  - password
+                  type: object
+                type: array
+              podProcessor:
+                properties:
+                  nameSpaceFilter:
+                    type: string
+                type: object
+              securedRegistries:
+                items:
+                  description: Use this object to connect to secured image registries
+                  properties:
+                    url:
+                      type: string
+                    user:
+                      type: string
+                    password:
+                      type: string
+                    token:
+                      type: string
+                  type: object
+                type: array
+              logLevel:
+                type: string
+            required:
+            - externalBlackDuck
+            type: object
+          status:
+            description: Status defines the observed state of BlackDuckConnector
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
