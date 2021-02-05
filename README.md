@@ -8,8 +8,8 @@
 ## Requirements
 
 * operatorsdk
-  * https://github.com/operator-framework/operator-sdk/releases
-  * https://sdk.operatorframework.io/docs/install-operator-sdk/
+  * operator-sdk [https://github.com/operator-framework/operator-sdk/releases]
+  * installation docs [https://sdk.operatorframework.io/docs/install-operator-sdk/]
   * version 1.3.0 is required
 * Helm 3
 * Docker
