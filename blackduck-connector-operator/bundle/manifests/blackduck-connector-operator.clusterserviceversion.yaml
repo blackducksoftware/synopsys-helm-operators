@@ -415,7 +415,7 @@ spec:
                 - --metrics-addr=127.0.0.1:8080
                 - --enable-leader-election
                 - --leader-election-id=blackduck-connector-operator
-                image: quay.io/synopsys/blackduck-connector-operator:latest #todo: change this
+                image: registry.connect.redhat.com/blackducksoftware/blackduck-connector-operator:latest
                 name: manager
                 resources:
                   limits:
