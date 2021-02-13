@@ -479,8 +479,7 @@ spec:
   - monitoring
   maturity: stable
   provider:
-    name: Synopsys, Inc.
-    url: https://www.synopsys.com
+    name: Synopsys, Inc
   selector:
     matchLabels:
       app: opssight
