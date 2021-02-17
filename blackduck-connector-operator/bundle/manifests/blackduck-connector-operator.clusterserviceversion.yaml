@@ -51,10 +51,10 @@ metadata:
             "externalBlackDuck": [
                 {
                   "scheme": "https",
-                  "domain": null,
+                  "domain": "",
                   "port": 443,
-                  "user": "sysadmin",
-                  "password": null,
+                  "user": "",
+                  "password": "",
                   "concurrentScanLimit": 3
               }
             ],

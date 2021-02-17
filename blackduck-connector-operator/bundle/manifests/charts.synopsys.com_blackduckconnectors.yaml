@@ -39,14 +39,17 @@ spec:
                     type: integer
                   domain:
                     type: string
+                    minLength: 2
                   password:
                     type: string
+                    minLength: 2
                   port:
                     type: integer
                   scheme:
                     type: string
                   user:
                     type: string
+                    minLength: 2
                 required:
                 - domain
                 - user

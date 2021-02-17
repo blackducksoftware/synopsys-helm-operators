@@ -105,6 +105,12 @@ This will create a catalog for you and install the operator in the cluster
 
 4. Go into the OpenShift UI and look for installed operators, create the BlackDuckConnector object by passing the variables.
 
+5. Cleanup the project using
+
+```shell
+    operator-sdk cleanup blackduck-connector-operator
+```
+
 ### Step 4: Fine tune the metadata in bundle
 
 The bundle/manifests/ folder has charts file which enables us to define the required component for UI:
@@ -155,14 +161,17 @@ This should match the templating or format of metadata/annotations/alm-examples 
               type: integer
             domain:
               type: string
+              minLength: 2
             password:
               type: string
+              minLength: 2
             port:
               type: integer
             scheme:
               type: string
             user:
               type: string
+              minLength: 2
           required:
           - domain
           - user
@@ -173,3 +182,5 @@ This should match the templating or format of metadata/annotations/alm-examples 
         - externalBlackDuck
       type: object
 ```
+
+READ MORE HERE[https://www.openshift.com/blog/openshift-4-2-declarative-dynamic-ui-for-your-operator]
