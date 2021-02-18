@@ -51,10 +51,10 @@ metadata:
             "externalBlackDuck": [
                 {
                   "scheme": "https",
-                  "domain": "",
+                  "domain": "example.blackduck.domain.com",
                   "port": 443,
-                  "user": "",
-                  "password": "",
+                  "user": "example_user",
+                  "password": "example_password",
                   "concurrentScanLimit": 3
               }
             ],
